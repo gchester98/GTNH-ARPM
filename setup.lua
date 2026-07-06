@@ -96,7 +96,6 @@ else
   end
 end
 
-
 --- OpenComputer Installation ---
 local ghBaseURL = string.format("%s/%s/%s/%s", ghContent, ghUser, ghRepo, ghBranch)
 local destination = string.format("/home/%s", ghRepo)
@@ -119,7 +118,8 @@ local syncFiles = {
   'lib/display/graphics/graphics.lua'
 }
 
-filesystem.makeDirectory(destination)
+filesystem.makeDirectory(string.format("%s/", destination))
+
 for _, filename in ipairs(syncFiles) do
   local dir = filename:match("(.+)/[^/]+$")
   if dir then
