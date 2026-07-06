@@ -106,11 +106,11 @@ end
 
 --- OpenComputer Installation ---
 local ghBaseURL = string.format("%s/%s/%s/%s", ghContent, ghUser, ghRepo, ghBranch)
+local destination = string.format("/home/%s", ghRepo)
 print(string.format("Fetching data from %s...", ghBaseURL))
 
 local syncFiles = {
   'README.md',
-  'setup.lua',
   'uninstall.lua',
   'configuration/config.lua',
   'lib/event_handling/events.lua',
@@ -120,14 +120,13 @@ local syncFiles = {
 
 for _, filename in ipairs(syncFiles) do
   print("\tDownloading: " .. filename)
-
   local dir = filename:match("(.+)/[^/]+$")
   if dir then
-    filesystem.makeDirectory(string.format("/home/%s/%s", ghRepo, dir))
+    filesystem.makeDirectory(string.format("%s/%s", destination, dir))
   end
 
-  --print(string.format("Executing: wget -f %s/%s/home/%s", ghBaseURL, filename, filename))
-  shell.execute(string.format("wget -f %s/%s/home/%s", ghBaseURL, filename, filename))
+  shell.execute(string.format("wget -f %s/%s %s/%s", ghBaseURL, filename, destination, filename))
+
 end
 
 print("\nGitHub file sync complete!")
