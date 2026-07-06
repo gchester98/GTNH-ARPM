@@ -3,7 +3,7 @@ local function loadConfig()
   return {
 
   -- Monitor Settings
-  resolution = {3840, 2050}
+  resolution = {3840, 2050},
   fullscreen = false,
   GUIscale = 6,
 
