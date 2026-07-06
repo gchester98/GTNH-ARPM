@@ -119,6 +119,7 @@ local syncFiles = {
   'lib/display/graphics/graphics.lua'
 }
 
+filesystem.makeDirectory(destination)
 for _, filename in ipairs(syncFiles) do
   local dir = filename:match("(.+)/[^/]+$")
   if dir then
