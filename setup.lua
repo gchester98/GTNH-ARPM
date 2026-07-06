@@ -96,18 +96,19 @@ else
   end
 end
 
-if argMap.value("--debug", "-d") then
-  print("--- DEBUG DATA ---")
-  print(string.format("ghUser:   %s", ghUser))
-  print(string.format("ghRepo:   %s", ghRepo))
-  print(string.format("ghBranch: %s", ghBranch))
-  print()
-end
 
 --- OpenComputer Installation ---
 local ghBaseURL = string.format("%s/%s/%s/%s", ghContent, ghUser, ghRepo, ghBranch)
 local destination = string.format("/home/%s", ghRepo)
-print(string.format("Fetching data from %s...", ghBaseURL))
+
+if argMap.value("--debug", "-d") then
+  print("--- DEBUG DATA ---")
+  print(string.format("ghUser:    %s", ghUser))
+  print(string.format("ghRepo:    %s", ghRepo))
+  print(string.format("ghBranch:  %s", ghBranch))
+  print(string.format("ghBaseURL: %s", ghBaseURL))
+  print()
+end
 
 local syncFiles = {
   'README.md',
@@ -119,7 +120,6 @@ local syncFiles = {
 }
 
 for _, filename in ipairs(syncFiles) do
-  print("\tDownloading: " .. filename)
   local dir = filename:match("(.+)/[^/]+$")
   if dir then
     filesystem.makeDirectory(string.format("%s/%s", destination, dir))
