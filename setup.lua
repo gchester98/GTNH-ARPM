@@ -123,7 +123,7 @@ for _, filename in ipairs(syncFiles) do
 
   local dir = filename:match("(.+)/[^/]+$")
   if dir then
-    filesystem.makeDirectory("/home/" .. dir)
+    filesystem.makeDirectory(string.format("/home/%s/%s", ghRepo, dir))
   end
 
   --print(string.format("Executing: wget -f %s/%s/home/%s", ghBaseURL, filename, filename))

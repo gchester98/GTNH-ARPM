@@ -1,3 +1,6 @@
+Install ARPM by using the following wget command:
+     wget https://raw.githubusercontent.com/gchester98/GTNH-ARPM/main/setup.lua && setup
+
 Fields Desired
     Total Power Stored
     Total Usage Over 5m
@@ -9,5 +12,3 @@ Display Method
     Line Chart showing Power over Time
         Delta highlighted in green / red between points
         Find way to set max power to infinity
-
-    
