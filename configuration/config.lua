@@ -1,80 +1,246 @@
-local function loadConfig()
-  -- NOTE: EACH CONFIG SHOULD END WITH A COMMA
-  return {
+------------------------------------------------------------
+-- config.lua
+--
+-- Augmented-Reality Power Manager (ARPM) Configuration
+-- User-editable settings only
+------------------------------------------------------------
 
-  -- Monitor Settings
-  resolution = {3840, 2050},
-  fullscreen = false,
-  GUIscale = 6,
+local config = {}
 
-  -- Display Options
-  showCurrentEU = true,
-  showRate = true,
-  showMaxEU = true,
+------------------------------------------------------------------------------
+-- Provider
+------------------------------------------------------------------------------
 
-  -- Enable wireless mode
-  wirelessMode = true,
-  -- Set the maximum value to reach 100%
-  wirelessMax = 1e21,
+config.provider = {
+  type = "lsc",
+  component = nil,
+  address = nil,
+  updateOnStartup = true
+}
 
-  -- The % difference between rate of change levels (chevrons)
-  rateThreshold = 0.003,
-  -- View numbers in metric or scientic notation
-  namedNumbers = true,
-  metric = true,
 
-  -- Dimensions
+------------------------------------------------------------------------------
+-- Data Refresh
+------------------------------------------------------------------------------
+
+config.update = {
+  dataInterval = 1
+}
+
+
+------------------------------------------------------------------------------
+-- History
+------------------------------------------------------------------------------
+
+config.history = {
+  -- Length of history to retain (seconds)
+  retention = 3600,
+  sampleRate = 1,
+  smoothing = 3,
+
+  -- Rolling statistics capture rate (seconds)
+  windows = {
+    current = 5,
+    short = 60,
+    medium = 300,
+    long = 3600
+  }
+}
+
+
+------------------------------------------------------------------------------
+-- Thresholds
+------------------------------------------------------------------------------
+
+config.thresholds = {
+  battery = {
+    warning = 20,
+    critical = 10
+  },
+
+  flow = {
+    idle = 1,
+    low = 1000,
+    high = 100000
+  }
+}
+
+
+------------------------------------------------------------------------------
+-- Formatting
+------------------------------------------------------------------------------
+
+config.format = {
+  mode = util.format.MODE.AUTO,
+  decimals = 2,
+  separator = true,
+  unit = "EU",
+  perTick = true
+}
+
+
+------------------------------------------------------------------------------
+-- Formatting Toggles
+------------------------------------------------------------------------------
+
+config.widgets = {
+
+    title = {
+        enabled = true,
+        order = 10
+    },
+
+    battery = {
+        enabled = true,
+        showStored = true,
+        showCapacity = true,
+        showPercent = true,
+        order = 20,
+    },
+
+    eta = {
+        enabled = true,
+        order = 30
+    },
+
+    flow = {
+        enabled = true,
+        order = 40
+    },
+
+    graph = {
+        enabled = false,
+        order = 50
+    }
+
+}
+
+
+------------------------------------------------------------------------------
+-- Themes & Color Overrides
+------------------------------------------------------------------------------
+
+config.theme = "gtnh"
+config.profile = "compact"
+
+config.colorOverrides = {
+  -- Leave empty to use the theme defaults
+}
+
+
+------------------------------------------------------------------------------
+-- HUD Positioning
+------------------------------------------------------------------------------
+
+-- Upper-Left Corner of HUD 
+config.position = {
+    anchor = "topLeft",
+    x = 15,
+    y = 15,
+    z = 5
+}
+
+
+------------------------------------------------------------------------------
+-- Layout || Enhancement - Allow drag / drop via OC Glasses
+------------------------------------------------------------------------------
+
+config.layout = {
+  width = 240,
+  lineHeight = 16,
+  margin = 8,
+  showBorder = true,
+  showBackground = true,
+  backgroundAlpha = 0.35
+}
+
+
+------------------------------------------------------------------------------
+-- User Interface Scale
+------------------------------------------------------------------------------
+
+config.scale = {
+  ui = 1.0,
+  title = 1.5,
+  text = 1.0,
+  icons = 1.0
+}
+
+
+------------------------------------------------------------------------------
+-- User Interface Animation
+------------------------------------------------------------------------------
+
+config.animation = {
+    enabled = true,
+    fps = 10,
+    smooth = true,
+    interpolate = true,
+    easing = "linear"
+}
+
+
+------------------------------------------------------------------------------
+-- EU Progress Bar
+------------------------------------------------------------------------------
+
+config.progressBar = {
+  style = "segments",
+  width = 220,
   height = 12,
-  length = 180,
-  borderBottom = 2,
-  borderTop = 2,
-  fontSize = 3,
-  shapeAlpha = 0.9,
-  textAlpha = 1.0,
-
-  -- Colors (see below for options)
-  primaryColor = colors.green,
-  secondaryColor = colors.darkSlateGreen,
-  textColor = colors.black,
-  issueColor = colors.red,
-  borderColor = colors.darkGray,
-
-  -- Seconds between updates
-  sleep = 1
+  segments = 20,
+  spacing = 1,
+  rounded = false,
+  showText = false,
+  animate = true
 }
 
-end
 
-colors = {
-  red = 0xFF0000,
-  orange = 0xFFA500,
-  yellow = 0xFFFF00,
-  green = 0x008000,
-  blue = 0x0000FF, 
-  indigo = 0x4B0082,
-  violet = 0x800080,
+------------------------------------------------------------------------------
+-- Net EU Flow Bar
+------------------------------------------------------------------------------
 
-  maroon = 0x800000,
-  golden = 0xDAA520,
-  lime = 0x00FF00,
-  olive = 0x556B2F,
-  cyan = 0x00FFFF,
-  magenta = 0xFF00FF,
-    
-  black = 0x000000,
-  white = 0xFFFFFF,
-  gray = 0x3C5B72,
-  lightGray = 0xA9A9A9,
-  darkGray = 0x181828,
-
-  electricBlue = 0x00A6FF,
-  dodgerBlue = 0x1E90FF,
-  steelBlue = 0x4682B4,
-  midnightBlue = 0x191970,
-  darkBlue = 0x000080,
-
-  darkSlateGreen = 0x2F4F4F,
-  darkSlateBlue = 0x303850
+config.flowBar = {
+  style = "packets",
+  directionMode = "auto",
+  packetWidth = 12,
+  packetSpacing = 18,
+  packetSpeed = 24,
+  fadeLength = 4,
+  pulse = true,
+  bounce = false,
+  animateWhenIdle = false
 }
 
-return loadConfig()
+
+------------------------------------------------------------------------------
+-- EU Graph
+------------------------------------------------------------------------------
+
+config.graph = {
+  style = "",
+  height = 64,
+  samples = 300,
+  autoscale = true,
+  grid = true
+} 
+
+
+------------------------------------------------------------------------------
+-- Debug Options
+------------------------------------------------------------------------------
+
+config.debug = {
+  enabled = false,
+  showFPS = false,
+  showPollTime = false,
+  showHistorySize = false
+}
+
+
+------------------------------------------------------------------------------
+-- Feature Toggles
+------------------------------------------------------------------------------
+
+
+return config
